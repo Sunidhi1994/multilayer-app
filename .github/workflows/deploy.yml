@@ -1,0 +1,42 @@
+name: this pilpline will host flask app
+on: 
+  workflow_dispatch: 
+
+jobs:
+ build_and_test:
+  runs-on: [ubuntu-latest]
+  steps:
+    -  name: checkout-repository
+       uses: actions/checkout@v3
+    -  name: install dependencies
+       run:
+         sudo apt update
+         sudo apt install docker-compose curl -y
+         sudo usermod -aG docker $USER
+         newgrp docker
+
+    - name: gcloud auth login
+    - uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+    -  name: configure artifact registry
+       run: |
+         gcloud auth configure-docker ${{ secrets.GCP_ARTIFACT }}
+
+    - name: build
+      run: | 
+          sudo docker-compose up --build -d
+
+    - name: test
+      run: | 
+           curl http://0.0.0.0:80
+
+    - name: push
+      run: | 
+           docker tag multilayer-app_flask-app us-central1-docker.pkg.dev/suni1994/nginx/flask:latest
+           docker tag nginx us-central1-docker.pkg.dev/suni1994/nginx/nginx:latest
+           docker push us-central1-docker.pkg.dev/suni1994/nginx/nginx:latest
+           docker push us-central1-docker.pkg.dev/suni1994/nginx/flask:latest
+      
+  
