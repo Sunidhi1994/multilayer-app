@@ -50,8 +50,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: docker system prune -af
-                  docker-compose up -d
+          script: | 
+            docker system prune -af
+            docker-compose up -d
+            curl 0.0.0.0:5000
     
        
           
