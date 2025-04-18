@@ -9,7 +9,7 @@ jobs:
     -  name: checkout-repository
        uses: actions/checkout@v3
     -  name: install dependencies
-       run:
+       run: |
          sudo apt update
          sudo apt install docker-compose curl -y
          sudo usermod -aG docker $USER
