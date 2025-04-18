@@ -37,5 +37,22 @@ jobs:
            docker tag nginx us-central1-docker.pkg.dev/suni1994/nginx/nginx:latest
            docker push us-central1-docker.pkg.dev/suni1994/nginx/nginx:latest
            docker push us-central1-docker.pkg.dev/suni1994/nginx/flask:latest
-      
+
+
+ deploy:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+     - name: executing remote ssh commands using password
+       uses: appleboy/ssh-action@v1
+       with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: docker system prune -af
+                  docker-compose up -d
+    
+       
+          
   
