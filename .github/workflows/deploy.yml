@@ -34,7 +34,6 @@ jobs:
 
     - name: push
       run: | 
-           docker tag multilayer-app_flask-app us-central1-docker.pkg.dev/suni1994/nginx/flask:latest
            docker tag nginx us-central1-docker.pkg.dev/suni1994/nginx/nginx:latest
            docker push us-central1-docker.pkg.dev/suni1994/nginx/nginx:latest
            docker push us-central1-docker.pkg.dev/suni1994/nginx/flask:latest
