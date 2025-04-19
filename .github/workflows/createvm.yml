@@ -5,6 +5,10 @@ on:
       project_id:
         description: 'GCP project id'
         required: true
+
+      service_account:
+        description: 'service account'
+        required: true
         
       vm_name:
         description: 'Name of the VM instance'
@@ -63,6 +67,8 @@ jobs:
               --image-project=${{ github.event.inputs.image_project }} \
               --tags=http-server \
               --boot-disk-size=${{ github.event.inputs.disk_size }} 
+              --service-account=${{ github.event.inputs.service_account }} \
+              --scopes=https://www.googleapis.com/auth/cloud-platform
 
     
   
