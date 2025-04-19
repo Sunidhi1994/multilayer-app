@@ -68,7 +68,7 @@ jobs:
               --tags=http-server \
               --boot-disk-size=${{ github.event.inputs.disk_size }} 
               --service-account=${{ github.event.inputs.service_account }} \
-              --scopes=https://www.googleapis.com/auth/cloud-platform
+              
 
     
   
