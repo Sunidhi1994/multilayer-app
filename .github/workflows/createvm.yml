@@ -1,0 +1,68 @@
+name: Create VM
+on: 
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: 'GCP project id'
+        required: true
+        
+      vm_name:
+        description: 'Name of the VM instance'
+        required: true
+        default: my-vm
+        
+      zone:
+        description: 'GCP zone'
+        required: true
+        default: 'us-central1-a'
+
+      machine_type:
+        description: 'Machine-type'
+        required: true
+        default: 'e2-micro'
+
+      image_family:
+        description: 'image-family'
+        required: true
+        default: 'debian-11'
+
+      image_project:
+        description: 'image-project'
+        required: true
+        default: 'debian-cloud'
+
+      disk_size:
+        description: 'Boot disk size'
+        required: true
+        default: '10GB'     
+        
+jobs:
+  create-vm:
+     runs-on: ubuntu-latest
+     steps: 
+        - name: checkout repo
+          uses: actions/checkout@v3
+
+        - name: Authenticate to Google Cloud 
+          uses: google-github-actions/auth@v2
+          with:
+            credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+        - name: Setup gcloud CLI
+          uses: google-github-actions/setup-gcloud@v1
+          with:
+             project_id: ${{ github.event.project_id }}
+
+        - name: Create VM instance
+          run: | 
+            gcloud compute instances create "${{ github.event.inputs.vm_name }}" \
+              --project=${{ github.event.inputs.project_id }} \
+              --zone=${{ github.event.inputs.zone }} \
+              --machine-type=${{ github.event.inputs.machine_type }} \
+              --image-family=${{ github.event.inputs.image_family }} \
+              --image-project=${{ github.event.inputs.image_project }} \
+              --tags=http-server \
+              --boot-disk-size=${{ github.event.inputs.disk_size }} 
+
+    
+  
