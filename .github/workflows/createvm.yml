@@ -66,8 +66,8 @@ jobs:
               --image-family=${{ github.event.inputs.image_family }} \
               --image-project=${{ github.event.inputs.image_project }} \
               --tags=http-server \
-              --boot-disk-size=${{ github.event.inputs.disk_size }} 
-              --service-account=${{ github.event.inputs.service_account }} \
+              --boot-disk-size=${{ github.event.inputs.disk_size }} \
+              --service-account=${{ github.event.inputs.service_account }}
               
 
     
